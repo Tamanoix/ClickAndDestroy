@@ -6,14 +6,14 @@ const endScreen = document.getElementById('endScreen');
 const changeTheme = document.getElementById('changeTheme');
 
 
-clicksLeft = 50;
-gameOverNumber = 25;
+clicksLeft = 50; // Nombre de clicks restants avant la fin de la partie
+gameOverNumber = 25; // Nombre d'ennemis maximum avant Game Over (à augmenter pour rendre le jeu plus facile)
 loopPlay = false;
 themeVirus = false;
 
 
 changeTheme.addEventListener('click', () => {
-    // On reset tout à 0 pour une nouvelle partie
+    // On reset les paramètres et le jeu en cas de changement de thème
     count = 0;
     getFaster = 6000;
     clicksRemaining = clicksLeft;
@@ -42,6 +42,7 @@ function start() {
 
     function game() {
         let randomTime = Math.round(Math.random() * getFaster);
+        // getFaster donne le temps de spawn maximum d'un ennemi, et se réduit au fil du temps (les ennemis apparaissent donc plus vite)
         getFaster > 700 ? getFaster = (getFaster * 0.90) : '';
 
         setTimeout(() => {
@@ -98,13 +99,14 @@ function enemyPop() {
     enemy.style.setProperty('--trX', `${ trX }%`);
     enemy.style.setProperty('--trY', `${ trY }%`);
 
+    // Permet d'avoir des ennemis avec un transform: rotateY de 0 ou de 180deg aléatoirement, et donc tournés de l'autre côté
     let changeFace = Math.random() < 0.5 ? '0deg' : '180deg';
     enemy.style.setProperty('--face', `${ changeFace }`);
 
     canvas.appendChild(enemy);
 }
 
-// Fonction pour supprimer un virus au click
+// Fonction pour supprimer un ennemi au click
 document.addEventListener('click', function(e) {
     let targetElement = e.target || e.srcElement;
     if (targetElement.classList.contains('enemy')) {
